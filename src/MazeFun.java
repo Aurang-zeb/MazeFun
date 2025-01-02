@@ -3,7 +3,9 @@ import java.util.Scanner;
 
 public class MazeFun {
 
-    // Define the maze with 'S' as the start, 'E' as the end, '#' as walls, '.' as empty space, 'P' as the player, 'X' as the enemy
+    // Define the maze with 'S' as the start, 'E' as the end, '#' as walls, '.' as empty space,
+    // 'P' as the player,
+    // 'X' as the enemy
     static char[][] gameboard = {
             {'S', '.', '.', '.', '#', '#', '#', '#'},
             {'.', '#', '#', '#', '.', '.', '.', '#'},
@@ -13,7 +15,7 @@ public class MazeFun {
     };
 
     // Starting position of the player
-    static int playerRow = 0, playerCol = 0;
+    static int heroRow = 0, heroCol = 0;
 
     // Enemy position
     static int enemyRow = 2, enemyCol = 4;
@@ -25,7 +27,7 @@ public class MazeFun {
         // Main game loop
         while (true) {
             // Display the maze
-            displayMaze();
+            displaygameboard();
 
             // Get the player's next move
             System.out.println("Enter your move (up, down, left, right): ");
@@ -42,19 +44,18 @@ public class MazeFun {
                 moveRight();
             }
 
-            // Move the enemy (can be random or fixed direction for simplicity)
             moveEnemy(random);
 
             // Check if the player reached the exit
-            if (gameboard[playerRow][playerCol] == 'E') {
-                displayMaze();
+            if (gameboard[heroRow][heroCol] == 'E') {
+                displaygameboard();
                 System.out.println("Congratulations! You reached the exit! You won the prize.");
                 break;
             }
 
             // Check if the player collides with the enemy
-            if (playerRow == enemyRow && playerCol == enemyCol) {
-                displayMaze();
+            if (heroRow == enemyRow && heroCol == enemyCol) {
+                displaygameboard();
                 System.out.println("Oh no! You were caught by the enemy. Game over.");
                 break;
             }
@@ -64,10 +65,10 @@ public class MazeFun {
     }
 
     // Function to display the maze
-    public static void displayMaze() {
+    public static void displaygameboard() {
         for (int i = 0; i < gameboard.length; i++) {
             for (int j = 0; j < gameboard[i].length; j++) {
-                if (i == playerRow && j == playerCol) {
+                if (i == heroRow && j == heroCol) {
                     System.out.print("P "); // P is the player
                 } else if (i == enemyRow && j == enemyCol) {
                     System.out.print("X "); // X is the enemy
@@ -81,8 +82,8 @@ public class MazeFun {
 
     // Function to move the player up
     public static void moveUp() {
-        if (playerRow > 0 && gameboard[playerRow - 1][playerCol] != '#') {
-            playerRow--;
+        if (heroRow > 0 && gameboard[heroRow - 1][heroCol] != '#') {
+            heroRow--;
         } else {
             System.out.println("Can't move up! There's a wall.");
         }
@@ -90,8 +91,8 @@ public class MazeFun {
 
     // Function to move the player down
     public static void moveDown() {
-        if (playerRow < gameboard.length - 1 && gameboard[playerRow + 1][playerCol] != '#') {
-            playerRow++;
+        if (heroRow < gameboard.length - 1 && gameboard[heroRow + 1][heroCol] != '#') {
+            heroRow++;
         } else {
             System.out.println("Can't move down! There's a wall.");
         }
@@ -99,8 +100,8 @@ public class MazeFun {
 
     // Function to move the player left
     public static void moveLeft() {
-        if (playerCol > 0 && gameboard[playerRow][playerCol - 1] != '#') {
-            playerCol--;
+        if (heroCol > 0 && gameboard[heroRow][heroCol - 1] != '#') {
+            heroCol--;
         } else {
             System.out.println("Can't move left! There's a wall.");
         }
@@ -108,8 +109,8 @@ public class MazeFun {
 
     // Function to move the player right
     public static void moveRight() {
-        if (playerCol < gameboard[0].length - 1 && gameboard[playerRow][playerCol + 1] != '#') {
-            playerCol++;
+        if (heroCol < gameboard[0].length - 1 && gameboard[heroRow][heroCol + 1] != '#') {
+            heroCol++;
         } else {
             System.out.println("Can't move right! There's a wall.");
         }
