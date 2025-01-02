@@ -2,75 +2,71 @@ import java.util.Scanner;
 
 public class MazeFun {
 
-    static char[][] maze = {
-            {'#', '#', '#', '#', '#', '#'},
-            {'#', '#', '#', '#', '#', '#'},
-            {'#', 'S', ' ', ' ', 'E', '#'},
-            {'#', ' ', '#', ' ', ' ', '#'},
-            {'#', ' ', '#', '#', ' ', '#'},
-            {'#', '#', '#', '#', '#', '#'}
+    private static final char[][] maze = {
+            {'#', '#', '#', '#', '#', '#', '#', '#', '#'},
+            {'#', 'P', ' ', ' ', '#', ' ', ' ', ' ', '#'},
+            {'#', ' ', '#', ' ', '#', ' ', '#', ' ', '#'},
+            {'#', ' ', '#', ' ', ' ', ' ', '#', ' ', '#'},
+            {'#', ' ', '#', '#', '#', ' ', '#', ' ', '#'},
+            {'#', ' ', ' ', ' ', '#', ' ', ' ', ' ', '#'},
+            {'#', '#', '#', ' ', '#', '#', '#', ' ', '#'},
+            {'#', ' ', ' ', ' ', ' ', ' ', ' ', 'E', '#'},
+            {'#', '#', '#', '#', '#', '#', '#', '#', '#'}
     };
 
-    static int playerX = 1, playerY = 1; // Start position at 'S'
+    // Player's starting position
+    private static int playerX = 1;
+    private static int playerY = 1;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        boolean gameRunning = true;
 
-        while (true) {
-            displayMaze();
-            System.out.print("Move (W/A/S/D): ");
-            char move = scanner.next().toUpperCase().charAt(0);
+        System.out.println("Welcome to the Maze Game!");
+        System.out.println("Navigate to 'E' to exit the maze. Use W/A/S/D to move.");
 
-            if (movePlayer(move)) {
-                System.out.println("You reached the exit! Game Over.");
-                break;
+        while (gameRunning) {
+            printMaze();
+            System.out.print("Enter your move (W/A/S/D): ");
+            char move = scanner.nextLine().toUpperCase().charAt(0);
+
+            switch (move) {
+                case 'W': movePlayer(-1, 0); break; // Up
+                case 'A': movePlayer(0, -1); break; // Left
+                case 'S': movePlayer(1, 0); break; // Down
+                case 'D': movePlayer(0, 1); break; // Right
+                default: System.out.println("Invalid move. Use W/A/S/D.");
+            }
+
+            if (maze[playerX][playerY] == 'E') {
+                System.out.println("Congratulations! You reached the exit!");
+                gameRunning = false;
             }
         }
+
         scanner.close();
     }
 
-    static void displayMaze() {
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
-                if (i == playerX && j == playerY) {
-                    System.out.print("P "); // Player's current position
-                } else {
-                    System.out.print(maze[i][j] + " ");
-                }
+    private static void printMaze() {
+        for (char[] row : maze) {
+            for (char cell : row) {
+                System.out.print(cell + " ");
             }
             System.out.println();
         }
     }
 
-    static boolean movePlayer(char direction) {
-        int newX = playerX, newY = playerY;
+    private static void movePlayer(int dx, int dy) {
+        int newX = playerX + dx;
+        int newY = playerY + dy;
 
-        switch (direction) {
-            case 'W': newX--; break; // Up
-            case 'S': newX++; break; // Down
-            case 'A': newY--; break; // Left
-            case 'D': newY++; break; // Right
-            default:
-                System.out.println("Invalid move! Use W/A/S/D.");
-                return false;
-        }
-
-        // Check if the move is valid
-        if (maze[newX][newY] == '#') {
-            System.out.println("You hit a wall! Try a different direction.");
-            return false;
-        }
-
-        // Check if the player reaches the exit
-        if (maze[newX][newY] == 'E') {
+        if (maze[newX][newY] == '#' || newX < 0 || newY < 0 || newX >= maze.length || newY >= maze[0].length) {
+            System.out.println("You hit a wall! Try another direction.");
+        } else {
+            maze[playerX][playerY] = ' ';
             playerX = newX;
             playerY = newY;
-            return true;
+            maze[playerX][playerY] = 'P';
         }
-
-        // Update player position
-        playerX = newX;
-        playerY = newY;
-        return false;
     }
 }
