@@ -87,7 +87,7 @@ public class MazeFun {
             System.out.println("Can't move left! There's a wall.");
         }
     }
-
+   /* this is enemy branch you working on */
     // Function to move the player right
     public static void moveRight() {
         if (playerCol < maze[0].length - 1 && maze[playerRow][playerCol + 1] != '#') {
