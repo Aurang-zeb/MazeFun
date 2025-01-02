@@ -2,7 +2,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class MazeFun {
-
     // Define the maze with 'S' as the start, 'E' as the end, '#' as walls, '.' as empty space,
     // 'P' as the player,
     // 'X' as the enemy
@@ -24,7 +23,7 @@ public class MazeFun {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        // Main game loop
+
         while (true) {
             // Display the maze
             displaygameboard();
@@ -64,7 +63,7 @@ public class MazeFun {
         scanner.close();
     }
 
-    // Function to display the maze
+    // Function to display the gameboard
     public static void displaygameboard() {
         for (int i = 0; i < gameboard.length; i++) {
             for (int j = 0; j < gameboard[i].length; j++) {
