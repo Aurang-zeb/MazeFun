@@ -1,8 +1,10 @@
+import java.util.Random;
 import java.util.Scanner;
+
 public class MazeFun {
 
-    // Define the maze with 'S' as the start, 'E' as the end, '#' as walls, and '.' as empty space
-    static char[][] maze = {
+    // Define the maze with 'S' as the start, 'E' as the end, '#' as walls, '.' as empty space, 'P' as the player, 'X' as the enemy
+    static char[][] gameboard = {
             {'S', '.', '.', '.', '#', '#', '#', '#'},
             {'.', '#', '#', '#', '.', '.', '.', '#'},
             {'.', '#', '.', '.', '.', '#', '.', '#'},
@@ -13,8 +15,12 @@ public class MazeFun {
     // Starting position of the player
     static int playerRow = 0, playerCol = 0;
 
+    // Enemy position
+    static int enemyRow = 2, enemyCol = 4;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
 
         // Main game loop
         while (true) {
@@ -36,10 +42,20 @@ public class MazeFun {
                 moveRight();
             }
 
+            // Move the enemy (can be random or fixed direction for simplicity)
+            moveEnemy(random);
+
             // Check if the player reached the exit
-            if (maze[playerRow][playerCol] == 'E') {
+            if (gameboard[playerRow][playerCol] == 'E') {
                 displayMaze();
-                System.out.println("Congratulations! You reached the exit! you won the prize");
+                System.out.println("Congratulations! You reached the exit! You won the prize.");
+                break;
+            }
+
+            // Check if the player collides with the enemy
+            if (playerRow == enemyRow && playerCol == enemyCol) {
+                displayMaze();
+                System.out.println("Oh no! You were caught by the enemy. Game over.");
                 break;
             }
         }
@@ -49,12 +65,14 @@ public class MazeFun {
 
     // Function to display the maze
     public static void displayMaze() {
-        for (int i = 0; i < maze.length; i++) {
-            for (int j = 0; j < maze[i].length; j++) {
+        for (int i = 0; i < gameboard.length; i++) {
+            for (int j = 0; j < gameboard[i].length; j++) {
                 if (i == playerRow && j == playerCol) {
                     System.out.print("P "); // P is the player
+                } else if (i == enemyRow && j == enemyCol) {
+                    System.out.print("X "); // X is the enemy
                 } else {
-                    System.out.print(maze[i][j] + " ");
+                    System.out.print(gameboard[i][j] + " ");
                 }
             }
             System.out.println();
@@ -63,7 +81,7 @@ public class MazeFun {
 
     // Function to move the player up
     public static void moveUp() {
-        if (playerRow > 0 && maze[playerRow - 1][playerCol] != '#') {
+        if (playerRow > 0 && gameboard[playerRow - 1][playerCol] != '#') {
             playerRow--;
         } else {
             System.out.println("Can't move up! There's a wall.");
@@ -72,7 +90,7 @@ public class MazeFun {
 
     // Function to move the player down
     public static void moveDown() {
-        if (playerRow < maze.length - 1 && maze[playerRow + 1][playerCol] != '#') {
+        if (playerRow < gameboard.length - 1 && gameboard[playerRow + 1][playerCol] != '#') {
             playerRow++;
         } else {
             System.out.println("Can't move down! There's a wall.");
@@ -81,19 +99,47 @@ public class MazeFun {
 
     // Function to move the player left
     public static void moveLeft() {
-        if (playerCol > 0 && maze[playerRow][playerCol - 1] != '#') {
+        if (playerCol > 0 && gameboard[playerRow][playerCol - 1] != '#') {
             playerCol--;
         } else {
             System.out.println("Can't move left! There's a wall.");
         }
     }
-   /* this is enemy branch you working on */
+
     // Function to move the player right
     public static void moveRight() {
-        if (playerCol < maze[0].length - 1 && maze[playerRow][playerCol + 1] != '#') {
+        if (playerCol < gameboard[0].length - 1 && gameboard[playerRow][playerCol + 1] != '#') {
             playerCol++;
         } else {
             System.out.println("Can't move right! There's a wall.");
+        }
+    }
+
+    // Function to move the enemy randomly
+    public static void moveEnemy(Random random) {
+        int direction = random.nextInt(4);
+
+        switch (direction) {
+            case 0: // Move up
+                if (enemyRow > 0 && gameboard[enemyRow - 1][enemyCol] != '#') {
+                    enemyRow--;
+                }
+                break;
+            case 1: // Move down
+                if (enemyRow < gameboard.length - 1 && gameboard[enemyRow + 1][enemyCol] != '#') {
+                    enemyRow++;
+                }
+                break;
+            case 2: // Move left
+                if (enemyCol > 0 && gameboard[enemyRow][enemyCol - 1] != '#') {
+                    enemyCol--;
+                }
+                break;
+            case 3: // Move right
+                if (enemyCol < gameboard[0].length - 1 && gameboard[enemyRow][enemyCol + 1] != '#') {
+                    enemyCol++;
+                }
+                break;
         }
     }
 }
